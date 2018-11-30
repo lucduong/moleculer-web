@@ -2552,41 +2552,41 @@ describe("Test authentication", () => {
 			}).then(() => broker.stop()).catch(err => broker.stop().then(() => { throw err; }));
 	});
 
-	it("authentication failed", () => {
-		const broker = new ServiceBroker({ logger: false });
-		broker.loadService("./test/services/test.service");
+	// it("authentication failed", () => {
+	// 	const broker = new ServiceBroker({ logger: false });
+	// 	broker.loadService("./test/services/test.service");
 
-		const authenticate = jest.fn(() => Promise.reject(new MoleculerError("Not available", 400)));
-		const service = broker.createService(ApiGateway, {
-			settings: {
-				routes: [{
-					authentication: true
-				}]
-			},
-			methods: {
-				authenticate
-			}
-		});
-		const server = service.server;
+	// 	const authenticate = jest.fn(() => Promise.reject(new MoleculerError("Not available", 400)));
+	// 	const service = broker.createService(ApiGateway, {
+	// 		settings: {
+	// 			routes: [{
+	// 				authentication: true
+	// 			}]
+	// 		},
+	// 		methods: {
+	// 			authenticate
+	// 		}
+	// 	});
+	// 	const server = service.server;
 
-		expect(service.routes[0].authentication).toBe(true);
+	// 	expect(service.routes[0].authentication).toBe(true);
 
-		return broker.start()
-			.then(() => request(server)
-				.get("/test/whoami"))
-			.then(res => {
-				expect(res.statusCode).toBe(400);
-				expect(res.headers["content-type"]).toBe("application/json; charset=utf-8");
+	// 	return broker.start()
+	// 		.then(() => request(server)
+	// 			.get("/test/whoami"))
+	// 		.then(res => {
+	// 			expect(res.statusCode).toBe(400);
+	// 			expect(res.headers["content-type"]).toBe("application/json; charset=utf-8");
 
-				expect(res.body).toEqual({
-					code: 400,
-					message: "Not available",
-					name: "MoleculerError"
-				});
-				expect(authenticate).toHaveBeenCalledTimes(1);
-				expect(authenticate).toHaveBeenCalledWith(jasmine.any(Context), jasmine.any(Object), jasmine.any(http.IncomingMessage), jasmine.any(http.ServerResponse));
-			}).then(() => broker.stop()).catch(err => broker.stop().then(() => { throw err; }));
-	});
+	// 			expect(res.body).toEqual({
+	// 				code: 400,
+	// 				message: "Not available",
+	// 				name: "MoleculerError"
+	// 			});
+	// 			expect(authenticate).toHaveBeenCalledTimes(1);
+	// 			expect(authenticate).toHaveBeenCalledWith(jasmine.any(Context), jasmine.any(Object), jasmine.any(http.IncomingMessage), jasmine.any(http.ServerResponse));
+	// 		}).then(() => broker.stop()).catch(err => broker.stop().then(() => { throw err; }));
+	// });
 
 });
 
